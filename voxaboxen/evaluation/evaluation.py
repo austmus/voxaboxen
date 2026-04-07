@@ -736,20 +736,39 @@ def combine_fwd_bck_preds(
     of edges.
     """
 
-    fwd_preds_fp = os.path.join(
-        target_dir, f"peaks_pred_{fn}-detthresh{det_thresh}-fwd.txt"
-    )
-    bck_preds_fp = os.path.join(
-        target_dir, f"peaks_pred_{fn}-detthresh{det_thresh}-bck.txt"
-    )
-    comb_preds_fp = os.path.join(
-        target_dir, f"peaks_pred_{fn}-detthresh{det_thresh}-comb.txt"
-    )
-    match_preds_fp = os.path.join(
-        target_dir, f"peaks_pred_{fn}-detthresh{det_thresh}-match.txt"
-    )
-    fwd_preds = pd.read_csv(fwd_preds_fp, sep="\t")
-    bck_preds = pd.read_csv(bck_preds_fp, sep="\t")
+    try:
+        fwd_preds_fp = os.path.join(
+            target_dir, f"peaks_pred_{fn}-detthresh{det_thresh}-fwd.txt"
+        )
+        bck_preds_fp = os.path.join(
+            target_dir, f"peaks_pred_{fn}-detthresh{det_thresh}-bck.txt"
+        )
+        comb_preds_fp = os.path.join(
+            target_dir, f"peaks_pred_{fn}-detthresh{det_thresh}-comb.txt"
+        )
+        match_preds_fp = os.path.join(
+            target_dir, f"peaks_pred_{fn}-detthresh{det_thresh}-match.txt"
+        )
+
+        fwd_preds = pd.read_csv(fwd_preds_fp, sep="\t")
+        bck_preds = pd.read_csv(bck_preds_fp, sep="\t")
+    
+    except Exception:
+        fwd_preds_fp = os.path.join(
+            target_dir, f"peaks_pred_{fn}-fwd.txt"
+        )
+        bck_preds_fp = os.path.join(
+            target_dir, f"peaks_pred_{fn}-bck.txt"
+        )
+        comb_preds_fp = os.path.join(
+            target_dir, f"peaks_pred_{fn}-comb.txt"
+        )
+        match_preds_fp = os.path.join(
+            target_dir, f"peaks_pred_{fn}-match.txt"
+        )
+
+        fwd_preds = pd.read_csv(fwd_preds_fp, sep="\t")
+        bck_preds = pd.read_csv(bck_preds_fp, sep="\t")
 
     c = Clip()
     c.load_annotations(fwd_preds_fp)
@@ -871,9 +890,9 @@ def export_to_selection_table(
 
     if hasattr(args, "bidirectional") and args.bidirectional:
         if is_bck:
-            fn += "-bck"
+            fn = f"{fn}-bck"
         else:
-            fn += "-fwd"
+            fn = f"{fn}-fwd"
 
     if target_dir is None:
         target_dir = args.experiment_output_dir

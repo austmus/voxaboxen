@@ -111,10 +111,11 @@ def inference(inference_args: argparse.Namespace) -> None:
                 classification_threshold=inference_args.classification_threshold,
             )
             comb_target_fp, _ = combine_fwd_bck_preds(
-                args.experiment_output_dir,
+                # args.experiment_output_dir,
+                output_dir,
                 fn,
-                comb_iou_threshold=inference_args.comb_iou_threshold,
-                comb_discard_threshold=inference_args.comb_discard_thresh,
+                comb_iou_thresh=inference_args.comb_iou_threshold,
+                comb_discard_threshold=inference_args.comb_discard_threshold,
                 det_thresh=inference_args.detection_threshold,
             )
             print(f"Saving predictions for {fn} to {comb_target_fp}")
