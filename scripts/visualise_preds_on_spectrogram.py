@@ -14,6 +14,36 @@ import librosa
 from scipy.io import wavfile
 
 
+"""
+Visualise Voxaboxen predictions on an audio spectrogram.
+
+This script loads a WAV file, generates a spectrogram, and overlays
+time-based bounding boxes from two annotation tables:
+1. ground truth annotations, and
+2. Voxaboxen prediction annotations.
+
+The annotation files are expected to be Raven-style selection tables
+containing begin and end times. These intervals are drawn as full-height
+outline boxes across the displayed frequency range so predicted events can
+be visually compared against the ground truth on the spectrogram.
+
+Inputs:
+- A mono or stereo WAV audio file
+- A ground truth Raven selection table
+- A prediction Raven selection table
+
+Outputs:
+- A saved spectrogram image with both annotation sets overlaid
+
+Example:
+    python visualise_preds_on_spectrogram.py \
+        --wav path/to/audio.wav \
+        --gt path/to/ground_truth.txt \
+        --pred path/to/predictions.txt \
+        --out spectrogram_overlay.png
+"""
+
+
 def load_raven_table(path: str) -> pd.DataFrame:
     if not os.path.exists(path):
         raise FileNotFoundError(path)
